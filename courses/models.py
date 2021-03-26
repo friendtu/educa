@@ -14,6 +14,9 @@ class Subject(models.Model):
     class Meta:
         ordering=['title']
 
+    def __str__(self):
+        return self.title
+
 class Course(models.Model):
     owner=models.ForeignKey(User,on_delete=models.CASCADE,related_name='courses_created')
     subject=models.ForeignKey(Subject,on_delete=models.CASCADE,related_name='courses')

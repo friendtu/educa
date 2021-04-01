@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %} {{module.order}}: {{module.title}} {% endblock %}
+
+{% block content %} 
+
+{% with course=module.course %}
+    <h1> Course {{course.title}} </h1>
+    <ul id="modules">
+        {% for m in course.modules.all %}
+            <li data-id="{{m.id}}" {% if m == module %} class="selected" {% endif %} > 
+                <a href="{% url "module_content_list" m.id %}">
+                    <span>
+                        Module <span class="order">{{mo.order}}</span>
+                    </span>
+                    <br>
+                    {{m.title}}
+                </a>
+            </li> 
+        {% endfor %}
+    </ul>
+    <p><a href="{% url "course_module_update" course.id %}">Edit moduler</a></p>
+{% endwith %}
+<div class="module">
+    <h2>Module {{m.order}}: {{m.title}}</h2>
+    <h3>Module contents:</h3>
+    <div id="module-content">
+        {% for content in m.contents.all %}
+            <div>
+                {% with item=content.item %}
+                    <p>item.title</p>
+                    <a href="{% url 'module_content_update' content.module.id item.content_type item.id %}">Edit</a>
+                    <form action="{% url 'ContentDeleteView' content.id %}">
+                        <input type='submit' value="Delete">
+                        {% csrf_token %}
+                    </form>
+                {% endwith %}
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+
+
+{% endblock %}

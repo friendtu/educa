@@ -28,8 +28,8 @@
         {% for content in m.contents.all %}
             <div>
                 {% with item=content.item %}
-                    <p>item.title</p>
-                    <a href="{% url 'module_content_update' content.module.id item.content_type item.id %}">Edit</a>
+                    <p>{{item.title}}</p>
+                    <a href="{% url 'module_content_update' content.module.id item|model_name item.id %}">Edit</a>
                     <form action="{% url 'ContentDeleteView' content.id %}">
                         <input type='submit' value="Delete">
                         {% csrf_token %}

@@ -63,7 +63,7 @@ class ItemBase(models.Model):
         abstract=True
 
 class Text(ItemBase):
-    content=models.TextField
+    content=models.TextField()
 
 class File(ItemBase):
     file=models.FileField(upload_to='files')

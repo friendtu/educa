@@ -85,8 +85,8 @@ class ContentCreateUpdateView(TemplateResponseMixin,View):
             return apps.get_model(app_label='courses',model_name=model_name)
         return None
 
-    def get_form(self,model_name,*args,**kwargs):
-        Form=modelform_factory(self.model,exclude=('owner','created','updated'))
+    def get_form(self,model,*args,**kwargs):
+        Form=modelform_factory(model,exclude=('owner','created','updated'))
         return Form(*args,**kwargs)
 
     def dispatch(self,request,module_id,model_name,id=None):
@@ -110,7 +110,7 @@ class ContentCreateUpdateView(TemplateResponseMixin,View):
             obj.save()
             if not id:
                 Content.objects.create(module=self.module,item=obj)
-            redirect('module_content_list',self.module.id)
+            return redirect('module_content_list',self.module.id)
         return self.render_to_response({'form':form,
                                         'object':self.obj})
 

@@ -102,7 +102,7 @@ class ContentCreateUpdateView(TemplateResponseMixin,View):
                                         'object':self.obj})
 
     def post(self,request,module_id,model_name,id=None):
-        form=self.get_form(self.model,instance=self.obj,data=request.POST,files=request.FILES)
+        form=self.get_form(self.model,data=request.POST,files=request.FILES)
 
         if form.is_valid():
             obj=form.save(commit=False)

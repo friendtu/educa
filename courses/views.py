@@ -116,8 +116,8 @@ class ContentCreateUpdateView(TemplateResponseMixin,View):
 
 
 class ContentDeleteView(View):
-    def post(self,request,id):
-        content=get_object_or_404(Content,id=id,module__course__owner=request.user)
+    def post(self,request,content_id):
+        content=get_object_or_404(Content,id=content_id,module__course__owner=request.user)
         module=content.module
         content.item.delete()
         content.delete()

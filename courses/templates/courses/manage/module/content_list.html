@@ -23,15 +23,15 @@
     <p><a href="{% url "course_module_update" course.id %}">Edit moduler</a></p>
 {% endwith %}
 <div class="module">
-    <h2>Module {{m.order}}: {{m.title}}</h2>
+    <h2>Module {{module.order}}: {{module.title}}</h2>
     <h3>Module contents:</h3>
     <div id="module-content">
-        {% for content in m.contents.all %}
+        {% for content in module.contents.all %}
             <div>
                 {% with item=content.item %}
                     <p>{{item.title}}</p>
                     <a href="{% url 'module_content_update' content.module.id item|model_name item.id %}">Edit</a>
-                    <form action="{% url 'ContentDeleteView' content.id %}">
+                    <form action="{% url 'module_content_detele' content.id %}">
                         <input type='submit' value="Delete">
                         {% csrf_token %}
                     </form>

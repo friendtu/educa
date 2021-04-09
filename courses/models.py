@@ -49,7 +49,7 @@ class Content(models.Model):
                                     limit_choices_to={'model__in':['text','file','image','video']})
     object_id = models.PositiveIntegerField()
     item = GenericForeignKey('content_type', 'object_id')
-    order=OrderField(blank=True,for_fields='module')
+    order=OrderField(blank=True,for_fields=['module'])
     class Meta:
         ordering=['order']
 
@@ -63,7 +63,7 @@ class ItemBase(models.Model):
         abstract=True
 
 class Text(ItemBase):
-    content=models.TextField
+    content=models.TextField()
 
 class File(ItemBase):
     file=models.FileField(upload_to='files')

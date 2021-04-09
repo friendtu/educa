@@ -32,7 +32,7 @@ class Course(models.Model):
         return self.title
 
 class Module(models.Model):
-    course=models.ForeignKey(Course,on_delete=True)
+    course=models.ForeignKey(Course,on_delete=True,related_name="modules")
     title=models.CharField(max_length=200)
     description=models.TextField(blank=True)
     order=OrderField(['course'])

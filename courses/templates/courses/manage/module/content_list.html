@@ -50,3 +50,14 @@
     </ul>
 </div>
 {% endblock %}
+{% block domready %}
+$('#modules').sortable({
+    stop:function(event,ui){
+        modules_order={};
+        $('#modules').children().each(function(){
+            $(this).find('.order').text(($(this).index()));
+            modules_order[$(this).data('id')]=$(this).index();
+        });
+    };
+})
+{% endblock %} 

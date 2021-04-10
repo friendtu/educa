@@ -10,6 +10,7 @@ from django.views.generic.base import TemplateResponseMixin,View
 from django.apps import apps
 from .models import Module,Content
 from django.forms.models import modelform_factory
+from braces import views
 
 
 # Create your views here.
@@ -122,6 +123,19 @@ class ContentDeleteView(View):
         content.item.delete()
         content.delete()
         return redirect('module_content_list',module.id)
+
+class ModuleOrderView(views.CsrfExemptMixin,views.JsonRequestResponseMixin,View):
+    def post(self,request, *args, **kwargs):
+        for  id,order in self.request_json.items():
+            Module.objects.filter(id=id,course__owner=request.user).update(order=order)
+        return self.render_json_response({'saved':'ok'})
+
+class ContentOrderView(views.CsrfExemptMixin,views.JsonRequestResponseMixin,View):
+    def post(self,request,*args,**kwargs):
+        for id,order in self.request_json.items():
+            Content.objects.filter(id=id,module__course__owner=request.user).update(order=order)
+        return self.render_json_response({'saved':'ok'})
+
 
 
 

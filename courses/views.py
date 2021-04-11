@@ -130,6 +130,7 @@ class ModuleOrderView(views.CsrfExemptMixin,views.JsonRequestResponseMixin,View)
             Module.objects.filter(id=id,course__owner=request.user).update(order=order)
         return self.render_json_response({'saved':'ok'})
 
+
 class ContentOrderView(views.CsrfExemptMixin,views.JsonRequestResponseMixin,View):
     def post(self,request,*args,**kwargs):
         for id,order in self.request_json.items():

@@ -12,7 +12,7 @@
             <li data-id="{{m.id}}" {% if m == module %} class="selected" {% endif %} > 
                 <a href="{% url "module_content_list" m.id %}">
                     <span>
-                        Module <span class="order">{{mo.order}}</span>
+                        Module <span class="order">{{m.order}}</span>
                     </span>
                     <br>
                     {{m.title}}
@@ -25,7 +25,7 @@
 <div class="module">
     <h2>Module {{module.order}}: {{module.title}}</h2>
     <h3>Module contents:</h3>
-    <div id="module-content">
+    <div id="module-contents">
         {% for content in module.contents.all %}
             <div>
                 {% with item=content.item %}
@@ -58,6 +58,28 @@ $('#modules').sortable({
             $(this).find('.order').text(($(this).index()));
             modules_order[$(this).data('id')]=$(this).index();
         });
-    };
-})
-{% endblock %} 
+
+        $.post('{% url "module_order" %}',data=JSON.stringify(modules_order),dataType="json");
+
+        {% comment %}
+        $.ajax({
+            type:'POST',
+            url: '{% url "module_order" %}',
+            data: JSON.stringify(modules_order),
+            dataType: "json",
+            connectType: "application/json;charset=utf-8"
+        });
+        {% endcomment %}
+    }
+});
+
+$("#module-contents").sortable({
+    stop:function(event,ui){
+        contents_order={};
+        $('#module-contents').children().each(function(){
+            contents_order[$(this).data('id')]=$(this).index();
+        });
+        $.post('{% url "content_order" %}',data=JSON.stringify(contents_order),dataType='json')
+    }
+});
+{% endblock %}

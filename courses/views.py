@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy,reverse
 from django.views.generic.list import ListView
 from .models import Course
 from django.views.generic.edit import CreateView,DeleteView,UpdateView
@@ -20,16 +20,16 @@ class OwnerMixin(object):
 
 class OwnerCourseMixin(OwnerMixin,LoginRequiredMixin):
     model=Course
-    fields=['subject','title','slug','overview']
-    success_url=reverse_lazy('manage_course_list')
-
+    
 class OwnerEditMixin(object):
     def form_valid(self,form):
         form.instance.owner=self.request.user
         return super().form_valid(form)
 
 class OwnerCourseEditMixin(OwnerEditMixin,OwnerCourseMixin):
+    fields=['subject','title','slug','overview']
     template_name='courses/manage/course/form.html'
+    success_url=reverse_lazy('manage_course_list')
 
 class ManageCourseListView(OwnerCourseMixin,ListView):
     template_name='courses/manage/course/list.html'
@@ -39,6 +39,11 @@ class CourseCreateView(PermissionRequiredMixin,OwnerCourseEditMixin,CreateView):
 
 class CourseUpdateView(PermissionRequiredMixin,OwnerCourseEditMixin,UpdateView):
     permission_required='course.change_course'
+
+class CourseDeleteView(PermissionRequiredMixin,OwnerCourseMixin,DeleteView):
+    permission_required='course.delete_course'
+    template_name="courses/manage/course/delete.html"
+    success_url=reverse_lazy('manage_course_list')
 
 class CourseModuleUpdateView(TemplateResponseMixin,View):
     template_name='courses/manage/module/formset.html'
@@ -62,9 +67,7 @@ class CourseModuleUpdateView(TemplateResponseMixin,View):
         self.course=get_object_or_404(Course,id=pk,owner=request.user)
         return super().dispatch(request,pk)
 
-class CourseDeleteView(PermissionRequiredMixin,OwnerCourseMixin,DeleteView):
-    permission_required='course.delete_course'
-    template_name="courses/manage/course/delete.html"
+
 
 #show all modules under the course that hosts the module 
 #show all contents under the module

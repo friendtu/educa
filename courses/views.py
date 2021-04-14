@@ -8,9 +8,10 @@ from .forms import ModuleFormSet
 from django.shortcuts import get_object_or_404,redirect
 from django.views.generic.base import TemplateResponseMixin,View
 from django.apps import apps
-from .models import Module,Content
+from .models import Module,Content,Subject
 from django.forms.models import modelform_factory
 from braces import views
+from django.db.models import Count
 
 
 # Create your views here.
@@ -140,6 +141,18 @@ class ContentOrderView(views.CsrfExemptMixin,views.JsonRequestResponseMixin,View
             Content.objects.filter(id=id,module__course__owner=request.user).update(order=order)
         return self.render_json_response({'saved':'ok'})
 
+class CourseListView(TemplateResponseMixin,View):
+    template_name="courses/course/list.html"
+    module=Course
 
-
-
+    def get(self,request,subject=None):
+        subjects=Subject.objects.annotate(total_course=Count('courses'))
+        courses=Course.objects.annotate(total_modules=Count('modules'))
+        if subject:
+            subject=get_object_or_404(Subject,slg==subject)
+            courses=courses.filter(subject=subject)
+        return self.render_to_response({
+                        'subjects':subjects,
+                        'subject':subject,
+                        'courses':courses
+                    })

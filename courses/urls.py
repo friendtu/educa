@@ -18,4 +18,5 @@ urlpatterns =[
     path('content/<int:content_id>/delete/',
             views.ContentDeleteView.as_view(),name="module_content_detele"),
     path('content/order/',views.ContentOrderView.as_view(),name="content_order"),
+    path('subject/<slug:subject>/',views.CourseListView.as_view(),name="course_list_subject"),
 ]

@@ -13,6 +13,7 @@ from .models import Module,Content,Subject
 from django.forms.models import modelform_factory
 from braces import views
 from django.db.models import Count
+from students.forms import CourseEnrollForm
 
 
 # Create your views here.
@@ -161,3 +162,9 @@ class CourseListView(TemplateResponseMixin,View):
 class CourseDetailView(DetailView):
     template_name="courses/course/detail.html"
     model=Course
+
+    def get_context_data(self,**kwargs):
+        context=super().get_context_data(**kwargs)
+        context['enroll_form']=CourseEnrollForm(initial={'course':self.object})
+        return context
+

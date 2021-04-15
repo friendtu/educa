@@ -4,6 +4,7 @@ from django.views.generic.list import ListView
 from .models import Course
 from django.views.generic.edit import CreateView,DeleteView,UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin,PermissionRequiredMixin
+from django.views.generic.detail import DetailView
 from .forms import ModuleFormSet
 from django.shortcuts import get_object_or_404,redirect
 from django.views.generic.base import TemplateResponseMixin,View
@@ -143,7 +144,7 @@ class ContentOrderView(views.CsrfExemptMixin,views.JsonRequestResponseMixin,View
 
 class CourseListView(TemplateResponseMixin,View):
     template_name="courses/course/list.html"
-    module=Course
+    #module=Course
 
     def get(self,request,subject=None):
         subjects=Subject.objects.annotate(total_course=Count('courses'))
@@ -157,5 +158,6 @@ class CourseListView(TemplateResponseMixin,View):
                         'courses':courses
                     })
 
-class CourseDetailView(TemplateResponseMixin,View):
-    pass
+class CourseDetailView(DetailView):
+    template_name="courses/course/detail.html"
+    model=Course

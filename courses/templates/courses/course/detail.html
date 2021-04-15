@@ -1,0 +1,19 @@
+{% extends "base.html" %} 
+
+{% block title %}  
+    {{ object.title }}
+{% endblock %}
+
+{% block content %} 
+    <h1> {{object.title}} </h1>
+    <div class="module">
+        <h2>Overview</h2>
+        {% with subject=object.subject %}
+            <a href="{% url 'course_list_subject' subject.slug %}">{{subject.title}}</a>. 
+            {{object.modules.count}} modules. 
+            Instructor: {{ object.owner.get_full_name }}
+        {% endwith %}
+        
+        {{object.overview|linebreaks}}
+    </div>
+{% endblock %}

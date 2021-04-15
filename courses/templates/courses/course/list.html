@@ -42,7 +42,7 @@
             <p>
                 <a href="{% url 'course_list_subject' subject.slug %}">{{subject.title }}</a>.
                 {{course.total_modules}} moules.
-                Instructor: {{course.owner.get_full_name}}
+                Instructor: {{ course.owner.get_full_name }}
             </p>
         {% endwith %}
     {% endfor %}

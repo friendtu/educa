@@ -11,6 +11,7 @@ from django.views.generic.list import ListView
 from courses.models import Course
 from django.views.generic.detail import DetailView
 
+
 # Create your views here.
 
 class StudentRegistrationView(CreateView):
@@ -27,6 +28,7 @@ class StudentRegistrationView(CreateView):
 
 class StudentCourseListView(LoginRequiredMixin,ListView):
     model=Course
+    template_name="students/course/list.html"
     def get_queryset(self):
         qs=super().get_queryset()
         qs.filter(students__in=[self.request.user])

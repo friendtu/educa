@@ -31,7 +31,7 @@ class StudentCourseListView(LoginRequiredMixin,ListView):
     template_name="students/course/list.html"
     def get_queryset(self):
         qs=super().get_queryset()
-        qs.filter(students__in=[self.request.user])
+        return qs.filter(students__in=[self.request.user])
 
 class StudentEnrollCourseView(LoginRequiredMixin,FormView):
     form_class=CourseEnrollForm

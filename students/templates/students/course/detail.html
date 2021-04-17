@@ -18,19 +18,19 @@
                         <br>
                         {{m.title}}
                     </a>
-
                 </li>
-
+            {% empty %}
+                <li>No mdules yet.</li>
             {% endfor %}
         </ul>
-
-
-
     </div>
 
-
-
     <div class="module">
-
+        {% for content in module.contents.all %}
+            {% with item=conent.item %}
+                <h2>{{ content.item.title }} </h2>
+                {{ item.render }}
+            {% endwith %}
+        {% endfor %}
     </div>
 {% endblock %}

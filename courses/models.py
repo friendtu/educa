@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from .fields import OrderField
+from django.template.loader import render_to_string
 
 
 # Create your models here.
@@ -33,7 +34,7 @@ class Course(models.Model):
         return self.title
 
 class Module(models.Model):
-    course=models.ForeignKey(Course,on_delete=True,related_name="modules")
+    course=models.ForeignKey(Course,on_delete=models.CASCADE,related_name="modules")
     title=models.CharField(max_length=200)
     description=models.TextField(blank=True)
     order=OrderField(['course'])
@@ -61,6 +62,9 @@ class ItemBase(models.Model):
     title=models.CharField(max_length=250)
     created=models.DateTimeField(auto_now_add=True)
     updated=models.DateTimeField(auto_now=True)
+
+    def render(self):
+        render_to_string("courses/content/{}.html".format(self._meta.model_name),{'item':self})
 
     class Meta:
         abstract=True

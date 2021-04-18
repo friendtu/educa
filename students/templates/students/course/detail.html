@@ -1,5 +1,7 @@
 {% extends "base.html" %} 
 
+{% load embed_video_tags %}
+
 {% block title %} 
     {{object.title}}
 {% endblock %} 
@@ -27,8 +29,8 @@
 
     <div class="module">
         {% for content in module.contents.all %}
-            {% with item=conent.item %}
-                <h2>{{ content.item.title }} </h2>
+            {% with item=content.item %}
+                <h2>{{ item.title }} </h2>
                 {{ item.render }}
             {% endwith %}
         {% endfor %}

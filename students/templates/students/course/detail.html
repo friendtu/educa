@@ -7,7 +7,7 @@
 {% block content %}
     <h1>{{ module.title }}</h1>
     <div class='contents'>
-        <h1>Modules</h1>
+        <h3>Modules</h3>
         <ul id="modules">
             {% for m in object.modules.all %} 
                 <li {% if m == module %} class="selected"{% endif %}>

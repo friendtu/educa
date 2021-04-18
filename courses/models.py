@@ -64,7 +64,7 @@ class ItemBase(models.Model):
     updated=models.DateTimeField(auto_now=True)
 
     def render(self):
-        render_to_string("courses/content/{}.html".format(self._meta.model_name),{'item':self})
+        return render_to_string("courses/content/{}.html".format(self._meta.model_name),{'item':self})
 
     class Meta:
         abstract=True

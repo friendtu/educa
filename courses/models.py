@@ -4,6 +4,7 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from .fields import OrderField
 from django.template.loader import render_to_string
+from embed_video.fields import EmbedVideoField
 
 
 # Create your models here.
@@ -64,7 +65,7 @@ class ItemBase(models.Model):
     updated=models.DateTimeField(auto_now=True)
 
     def render(self):
-        render_to_string("courses/content/{}.html".format(self._meta.model_name),{'item':self})
+        return render_to_string("courses/content/{}.html".format(self._meta.model_name),{'item':self})
 
     class Meta:
         abstract=True
@@ -79,7 +80,7 @@ class Image(ItemBase):
     image=models.ImageField(upload_to='images')
 
 class Video(ItemBase):
-    video=models.URLField()
+    video=EmbedVideoField()
 
 
     
